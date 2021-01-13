@@ -1,5 +1,4 @@
-import { Component, K8sApi } from '@k8slens/extensions';
-import { Namespace } from '@k8slens/extensions/dist/src/renderer/api/endpoints';
+import { Component } from '@k8slens/extensions';
 import React from 'react';
 import { Tenant, Metadata, AdditionalRoleBinding, AllowList, LimitRange, NetworkPolicy } from '../tenant';
 import './tenant-details.scss';
@@ -34,7 +33,6 @@ export class TenantDetails extends React.Component<Props> {
         <AdditionalRoleBindings values={spec.additionalRoleBindings} />
         <LimitRanges values={spec.limitRanges} />
         <NetworkPolicies values={spec.networkPolicies} />
-        <NamespacesTable values={status.namespaces} />
       </div>
     );
   }
@@ -186,45 +184,4 @@ const NetworkPolicies = (props: { values?: NetworkPolicy[] }) => {
       </Component.DrawerParamToggler>
     </Component.DrawerItem>
   );
-};
-
-const NamespacesTable = (props: { values?: string[] }) => {
-  if (!props.values)
-    return null;
-
-  const nsStore: K8sApi.KubeObjectStore<Namespace> =
-    K8sApi.apiManager.getStore(K8sApi.namespacesApi);
-
-  const rows = props.values.map(name => {
-    const ns = nsStore.getByName(name);
-    const age = ns.getAge();
-    const status = ns.getStatus();
-    const labels = ns.getLabels().map(label => (
-      <Component.Badge key={label} label={label} />
-    ));
-
-    return (
-      <Component.TableRow nowrap key={ns.getId()}>
-        <Component.TableCell>{name}</Component.TableCell>
-        <Component.TableCell>{labels}</Component.TableCell>
-        <Component.TableCell>{age}</Component.TableCell>
-        <Component.TableCell>
-          <span className={status}>{status}</span>
-        </Component.TableCell>
-      </Component.TableRow>
-    );
-  });
-
-  return <>
-    <Component.DrawerTitle title='Namespaces' />
-    <Component.Table className='NamespacesTable'>
-      <Component.TableHead>
-        <Component.TableCell>Name</Component.TableCell>
-        <Component.TableCell>Labels</Component.TableCell>
-        <Component.TableCell>Age</Component.TableCell>
-        <Component.TableCell>Status</Component.TableCell>
-      </Component.TableHead>
-      {rows}
-    </Component.Table>
-  </>;
 };

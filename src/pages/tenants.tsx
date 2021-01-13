@@ -1,5 +1,4 @@
-import { Component, K8sApi, LensRendererExtension } from '@k8slens/extensions';
-import { Namespace } from '@k8slens/extensions/dist/src/renderer/api/endpoints';
+import { Component, LensRendererExtension } from '@k8slens/extensions';
 import React from 'react';
 import { Tenant } from '../tenant';
 import { tenantStore } from '../tenant-store';
@@ -14,16 +13,12 @@ const enum sortBy {
   age = 'age',
 }
 
-const nsStore: K8sApi.KubeObjectStore<Namespace> =
-  K8sApi.apiManager.getStore(K8sApi.namespacesApi);
-
 export class CustomTenantPage extends React.Component<{ extension: LensRendererExtension }> {
   render() {
     return (
       <Component.KubeObjectListLayout
         className='CustomTenantPage'
         store={tenantStore}
-        dependentStores={[nsStore]}
         isClusterScoped={true}
         sortingCallbacks={{
           [sortBy.name]: (tenant: Tenant) => tenant.getName(),
