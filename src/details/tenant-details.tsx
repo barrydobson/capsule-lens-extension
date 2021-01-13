@@ -11,8 +11,6 @@ export class TenantDetails extends React.Component<Props> {
     if (!tenant) return null;
 
     const { spec, status } = tenant;
-    const resourceQuotas = spec.resourceQuotas
-      ?.flatMap(rq => Object.entries(rq.hard || {}));
 
     return (
       <div className='CustomTenantDetails'>
@@ -22,8 +20,6 @@ export class TenantDetails extends React.Component<Props> {
         <Component.DrawerItem name='Namespace count'>{status.size}</Component.DrawerItem>
         <Component.DrawerItem name='Owner name'>{spec.owner.name}</Component.DrawerItem>
         <Component.DrawerItem name='Owner kind'>{spec.owner.kind}</Component.DrawerItem>
-        <Labels name='Node selector' dict={spec.nodeSelector} />
-        <Labels name='Resource Quotas' pairs={resourceQuotas} />
       </div>
     );
   }
@@ -36,29 +32,3 @@ const Metrics = () => (
     Metrics Placeholder
   </div>
 );
-
-const Labels = (
-  props: {
-    name: string;
-    values?: string[];
-    pairs?: [string, unknown][];
-    dict?: Record<string, unknown>;
-  }
-) => {
-  if (!props.values && !props.pairs && !props.dict)
-    return null;
-
-  return (
-    <Component.DrawerItem labelsOnly name={props.name}>
-      {props.pairs && props.pairs.map(([key, value]) => (
-        <Component.Badge key={key} label={`${key}=${value}`} />
-      ))}
-      {props.dict && Object.entries(props.dict).map(([key, value]) => (
-        <Component.Badge key={key} label={`${key}=${value}`} />
-      ))}
-      {props.values && props.values.map(value => (
-        <Component.Badge key={value} label={value} />
-      ))}
-    </Component.DrawerItem>
-  );
-};
