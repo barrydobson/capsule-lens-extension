@@ -1,7 +1,6 @@
 import { Component, LensRendererExtension } from '@k8slens/extensions';
 import * as registries from '@k8slens/extensions/dist/src/extensions/registries';
 import React from 'react';
-import { ResourceQuotaDetails } from './details/resource-quota-details';
 import { CustomResourceQuotaPage } from './pages/resource-quotas';
 import { CustomTenantPage } from './pages/tenants';
 
@@ -47,16 +46,6 @@ export default class RendererExtension extends LensRendererExtension {
       target: { pageId: id.resourceBudget },
       title: 'Resource Budget',
       components: { Icon }
-    }
-  ];
-
-  kubeObjectDetailItems: registries.KubeObjectDetailRegistration[] = [
-    {
-      kind: 'ResourceQuota',
-      apiVersions: ['v1'],
-      components: {
-        Details: ResourceQuotaDetails
-      }
     }
   ];
 }
