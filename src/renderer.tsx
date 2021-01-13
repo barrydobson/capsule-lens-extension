@@ -1,7 +1,6 @@
 import { Component, LensRendererExtension } from '@k8slens/extensions';
 import * as registries from '@k8slens/extensions/dist/src/extensions/registries';
 import React from 'react';
-import { CustomResourceQuotaPage } from './pages/resource-quotas';
 import { CustomTenantPage } from './pages/tenants';
 
 const enum id {
@@ -19,12 +18,6 @@ export default class RendererExtension extends LensRendererExtension {
       id: id.tenants,
       components: {
         Page: () => <CustomTenantPage extension={this} />
-      }
-    },
-    {
-      id: id.resourceBudget,
-      components: {
-        Page: () => <CustomResourceQuotaPage extension={this} />
       }
     }
   ];
