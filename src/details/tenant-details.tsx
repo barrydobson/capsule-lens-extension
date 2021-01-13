@@ -30,7 +30,6 @@ export class TenantDetails extends React.Component<Props> {
         <AllowList name='Storage classes' value={spec.storageClasses} />
         <Metadata name='Namespaces metadata' value={spec.namespacesMetadata} />
         <Metadata name='Services metadata' value={spec.servicesMetadata} />
-        <AdditionalRoleBindings values={spec.additionalRoleBindings} />
       </div>
     );
   }
@@ -100,35 +99,6 @@ const Metadata = (props: { name: string, value?: Metadata }) => {
         name='Additional labels'
         dict={props.value.additionalLabels}
       />
-    </Component.DrawerItem>
-  );
-};
-
-const AdditionalRoleBindings = (props: { values?: AdditionalRoleBinding[] }) => {
-  if (!props.values)
-    return null;
-
-  return (
-    <Component.DrawerItem name='Additional role bindings'>
-      <Component.DrawerParamToggler label={props.values.length}>
-        {props.values.map(binding => {
-          const subjects = binding.subjects
-            .flatMap(subject => Object.entries(subject));
-
-          return <>
-            <Component.DrawerItem name='Cluster role name'>
-              {binding.clusterRoleName}
-            </Component.DrawerItem>
-            <Component.DrawerItem name='Subjects'>
-              {subjects.map(([key, value]) => (
-                <Component.DrawerItem key={key} name={key}>
-                  {value}
-                </Component.DrawerItem>
-              ))}
-            </Component.DrawerItem>
-          </>;
-        })}
-      </Component.DrawerParamToggler>
     </Component.DrawerItem>
   );
 };
