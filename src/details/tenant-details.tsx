@@ -1,6 +1,6 @@
 import { Component } from '@k8slens/extensions';
 import React from 'react';
-import { Tenant, Metadata, AdditionalRoleBinding, AllowList, LimitRange, NetworkPolicy } from '../tenant';
+import { Tenant, Metadata, AdditionalRoleBinding, AllowList, LimitRange } from '../tenant';
 import './tenant-details.scss';
 
 export type Props = Component.KubeObjectDetailsProps<Tenant>
@@ -32,18 +32,12 @@ export class TenantDetails extends React.Component<Props> {
         <Metadata name='Services metadata' value={spec.servicesMetadata} />
         <AdditionalRoleBindings values={spec.additionalRoleBindings} />
         <LimitRanges values={spec.limitRanges} />
-        <NetworkPolicies values={spec.networkPolicies} />
       </div>
     );
   }
 }
 
 //
-
-const JsonView = (props: { json?: unknown }) => (
-  <Component.Input multiLine theme='round-black' className='JsonView'
-    value={JSON.stringify(props.json, null, 2)} />
-);
 
 const Metrics = () => (
   <div className='Metrics flex justify-center align-center'>
@@ -157,30 +151,6 @@ const LimitRanges = (props: { values?: LimitRange[] }) => {
             ))}
           </Component.DrawerItem>
         ))}
-      </Component.DrawerParamToggler>
-    </Component.DrawerItem>
-  );
-};
-
-const NetworkPolicies = (props: { values?: NetworkPolicy[] }) => {
-  if (!props.values)
-    return null;
-
-  return (
-    <Component.DrawerItem name='Network policies'>
-      <Component.DrawerParamToggler label={props.values.length}>
-        {props.values.map(np => <>
-          <Labels name='Policy types' values={np.policyTypes} />
-          <Component.DrawerItem name='Pod selector'>
-            <JsonView json={np.podSelector} />
-          </Component.DrawerItem>
-          <Component.DrawerItem name='Egress'>
-            <JsonView json={np.egress} />
-          </Component.DrawerItem>
-          <Component.DrawerItem name='Ingress'>
-            <JsonView json={np.ingress} />
-          </Component.DrawerItem>
-        </>)}
       </Component.DrawerParamToggler>
     </Component.DrawerItem>
   );
