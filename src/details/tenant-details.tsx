@@ -1,6 +1,6 @@
 import { Component } from '@k8slens/extensions';
 import React from 'react';
-import { Tenant, Metadata, AdditionalRoleBinding, AllowList, LimitRange } from '../tenant';
+import { Tenant, Metadata, AdditionalRoleBinding, AllowList } from '../tenant';
 import './tenant-details.scss';
 
 export type Props = Component.KubeObjectDetailsProps<Tenant>
@@ -31,7 +31,6 @@ export class TenantDetails extends React.Component<Props> {
         <Metadata name='Namespaces metadata' value={spec.namespacesMetadata} />
         <Metadata name='Services metadata' value={spec.servicesMetadata} />
         <AdditionalRoleBindings values={spec.additionalRoleBindings} />
-        <LimitRanges values={spec.limitRanges} />
       </div>
     );
   }
@@ -129,28 +128,6 @@ const AdditionalRoleBindings = (props: { values?: AdditionalRoleBinding[] }) => 
             </Component.DrawerItem>
           </>;
         })}
-      </Component.DrawerParamToggler>
-    </Component.DrawerItem>
-  );
-};
-
-const LimitRanges = (props: { values?: LimitRange[] }) => {
-  if (!props.values)
-    return null;
-
-  const limits = props.values
-    .flatMap(limitRange => limitRange.limits);
-
-  return (
-    <Component.DrawerItem name='Limit ranges'>
-      <Component.DrawerParamToggler label={limits.length}>
-        {limits.map(({ type, ...rest }) => (
-          <Component.DrawerItem key={type} name={type}>
-            {Object.entries(rest).map(([key, value]) => (
-              <Labels key={key} name={key} dict={value} />
-            ))}
-          </Component.DrawerItem>
-        ))}
       </Component.DrawerParamToggler>
     </Component.DrawerItem>
   );
