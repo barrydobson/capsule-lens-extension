@@ -1,6 +1,6 @@
 import { Component } from '@k8slens/extensions';
 import React from 'react';
-import { Tenant, Metadata, AdditionalRoleBinding, AllowList } from '../tenant';
+import { Tenant, AllowList } from '../tenant';
 import './tenant-details.scss';
 
 export type Props = Component.KubeObjectDetailsProps<Tenant>
@@ -28,8 +28,6 @@ export class TenantDetails extends React.Component<Props> {
         <AllowList name='Container registries' value={spec.containerRegistries} />
         <AllowList name='Ingress classes' value={spec.ingressClasses} />
         <AllowList name='Storage classes' value={spec.storageClasses} />
-        <Metadata name='Namespaces metadata' value={spec.namespacesMetadata} />
-        <Metadata name='Services metadata' value={spec.servicesMetadata} />
       </div>
     );
   }
@@ -81,24 +79,6 @@ const AllowList = (props: { name: string, value?: AllowList }) => {
           <code>{props.value.allowedRegex}</code>
         </Component.DrawerItem>
       )}
-    </Component.DrawerItem>
-  );
-};
-
-const Metadata = (props: { name: string, value?: Metadata }) => {
-  if (!props.value)
-    return null;
-
-  return (
-    <Component.DrawerItem name={props.name}>
-      <Labels
-        name='Additional annotations'
-        dict={props.value.additionalAnnotations}
-      />
-      <Labels
-        name='Additional labels'
-        dict={props.value.additionalLabels}
-      />
     </Component.DrawerItem>
   );
 };
